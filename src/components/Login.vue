@@ -1,23 +1,23 @@
 <template>
-    <div class="login">
-        <div class="login_box">
-          <div class="avatar_box">
-            <img src="../assets/logo.png" alt="">
-          </div>
-          <el-form :rules="rules" :model="loginForm" ref="loginForm" label-width="0px" class="login_form" >
-            <el-form-item prop="username">
-              <el-input prefix-icon="el-icon-user" v-model="loginForm.username"></el-input>
-            </el-form-item>
-            <el-form-item prop="password">
-              <el-input prefix-icon="el-icon-key" v-model="loginForm.password" type="password"></el-input>
-            </el-form-item>
-            <el-form-item class="btns">
-                <el-button type="primary" @click="login('loginForm')">登录</el-button>
-                <el-button type="info" @click="restLoginForm('loginForm')" >重置</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
+  <div class="login">
+    <div class="login_box">
+      <div class="avatar_box">
+        <img src="../assets/logo.png" alt="">
+      </div>
+      <el-form :rules="rules" :model="loginForm" ref="loginForm" label-width="0px" class="login_form">
+        <el-form-item prop="account">
+          <el-input prefix-icon="el-icon-user" v-model="loginForm.account"></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input prefix-icon="el-icon-key" v-model="loginForm.password" type="password"></el-input>
+        </el-form-item>
+        <el-form-item class="btns">
+          <el-button type="primary" @click="login('loginForm')">登录</el-button>
+          <el-button type="info" @click="restLoginForm('loginForm')">重置</el-button>
+        </el-form-item>
+      </el-form>
     </div>
+  </div>
 </template>
 
 <script>
@@ -25,30 +25,58 @@ export default {
   data () {
     return {
       loginForm: {
-        username: '',
-        password: ''
+        account: 'admin',
+        password: '123456'
       },
       rules: {
-        username: [
-          { required: true, message: '请输入账号', trigger: 'blur' },
-          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+        account: [
+          {
+            required: true,
+            message: '请输入账号',
+            trigger: 'blur'
+          },
+          {
+            min: 3,
+            max: 10,
+            message: '长度在 3 到 10 个字符',
+            trigger: 'blur'
+          }
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          {
+            required: true,
+            message: '请输入密码',
+            trigger: 'blur'
+          },
+          {
+            min: 3,
+            max: 10,
+            message: '长度在 3 到 10 个字符',
+            trigger: 'blur'
+          }
         ]
       }
     }
   },
   methods: {
     restLoginForm (formName) {
-      this.username = ''
+      this.account = ''
       this.password = ''
       this.$refs[formName].resetFields()
     },
     login (formName) {
-      this.$refs[formName].validate(valid => {
-        console.log(valid)
+      this.$refs[formName].validate(async valid => {
+        // console.log(valid)
+        if (valid) {
+          this.$http({
+            url: '/auth/token',
+            method: 'post',
+            params: this.loginForm
+          }).then(res => {
+            console.log(res.data)
+          }).catch(() => {
+          })
+        }
       })
     }
   }
@@ -57,13 +85,13 @@ export default {
 
 <style scoped lang="less">
 
-.login{
+.login {
   height: 100%;
   width: 100%;
   background-color: #2b4b6b;
 }
 
-.login_box{
+.login_box {
   width: 450px;
   height: 300px;
   background-color: #fff;
@@ -74,7 +102,7 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.avatar_box{
+.avatar_box {
   height: 130px;
   width: 130px;
   border: 1px solid #eee;
@@ -84,7 +112,8 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  img{
+
+  img {
     height: 100%;
     width: 100%;
     border-radius: 50%;
@@ -92,7 +121,7 @@ export default {
   }
 }
 
-.login_form{
+.login_form {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -100,7 +129,7 @@ export default {
   box-sizing: border-box;
 }
 
-.btns{
+.btns {
   display: flex;
   justify-content: flex-end;
 }
