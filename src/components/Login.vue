@@ -65,16 +65,20 @@ export default {
       this.$refs[formName].resetFields()
     },
     login (formName) {
-      this.$refs[formName].validate(async valid => {
-        // console.log(valid)
+      this.$refs[formName].validate(valid => {
         if (valid) {
           this.$http({
             url: '/auth/token',
             method: 'post',
             params: this.loginForm
           }).then(res => {
-            console.log(res.data)
-          }).catch(() => {
+            window.sessionStorage.setItem('token', res.data.data.token)
+            this.$router.push('/home')
+            this.$message.success(res.data.msg)
+          }).catch(res => {
+            if (res.code !== 200) {
+              this.$message.error(res.message)
+            }
           })
         }
       })
