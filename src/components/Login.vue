@@ -91,14 +91,14 @@ export default {
 
 .login {
   height: 100%;
-  width: 100%;
   background-color: #2b4b6b;
+  width: 100%;
 }
 
 .login_box {
   width: 450px;
   height: 300px;
-  background-color: #fff;
+  background-color: #ffffff;
   border-radius: 3px;
   position: absolute;
   left: 50%;
@@ -109,13 +109,13 @@ export default {
 .avatar_box {
   height: 130px;
   width: 130px;
-  border: 1px solid #eee;
+  border: 1px solid #eeeeee;
   border-radius: 50%;
   padding: 10px;
-  box-shadow: 0 0 10px #ddd;
+  box-shadow: 0 0 10px #dddddd;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
+  background-color: #ffffff;
 
   img {
     height: 100%;
